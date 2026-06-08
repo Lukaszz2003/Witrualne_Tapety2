@@ -34,8 +34,11 @@
     position: relative;
     z-index: 3;
     padding: 0 6vw;
-    max-width: 800px; /* To jest kluczowe – ogranicza szerokość bloku tekstu */
-    width: 100%;      /* Zapewnia responsywność wewnątrz max-width */
+    width: 100%;
+    /* Wymuszamy, aby zawartość nie przekroczyła 800px */
+    max-width: 800px; 
+    /* Centrujemy blok, jeśli ekran jest większy niż 800px */
+    margin: 0; 
 }
 
 .hero-tag {
@@ -48,13 +51,14 @@
 }
 
 .hero-title {
-    /* UŻYWAJ CLAMP ZAMIAST CALC: (min, ideal, max) */
-    /* Tekst nigdy nie będzie mniejszy niż 2.5rem i większy niż 5rem */
-    font-size: clamp(2.5rem, 5vw, 5rem); 
+    /* Ustawiamy sztywniejszą, bezpieczniejszą wartość dla 1920px */
+    font-size: 4rem; 
     font-weight: 900;
     line-height: 1.1;
     letter-spacing: -0.02em;
     margin-bottom: 25px;
+    /* Dodajemy word-break, żeby długie słowa nie rozpychały kontenera */
+    word-break: break-word;
 }
 
 .hero-description {
