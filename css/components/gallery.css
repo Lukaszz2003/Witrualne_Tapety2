@@ -1,0 +1,123 @@
+/* Kontener całej podstrony z realizacjami */
+.gallery-page-wrapper {
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    padding: 180px 6vw 120px 6vw; /* Duży padding od góry, żeby menu nie zasłaniało tytułów */
+}
+
+/* Sekcja pojedynczej kategorii (np. Smartfony) */
+.category-block {
+    margin-bottom: 100px; /* Wyraźny odstęp między sekcjami */
+}
+
+/* Nowoczesny, techniczny nagłówek kategorii */
+.category-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 20px;
+}
+
+.category-number {
+    font-family: monospace;
+    font-size: 1rem;
+    color: #00f2fe; /* Nasz miętowy akcent */
+    font-weight: 700;
+}
+
+.category-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+}
+
+/* Symetryczna, trójkolumnowa siatka dla 3 grafik */
+.project-row-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Dokładnie 3 równe kolumny */
+    gap: 40px; /* Elegancki odstęp dający grafikom odetchnąć */
+}
+
+/* Pojedyncza karta z projektem */
+.project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #1a1d24; /* Delikatnie jaśniejsze tło karty dla odcięcia od podłoża */
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Kontener na samo zdjęcie w karcie */
+.project-image-wrapper {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #121418;
+}
+
+/* Dopasowanie proporcji zdjęć w zależności od typu urządzenia */
+.category-block:nth-of-type(1) .project-image-wrapper {
+    height: 55vh; /* Wyższy kadr dla pionowych tapet na smartfony */
+}
+
+.category-block:nth-of-type(2) .project-image-wrapper {
+    height: 35vh; /* Szerszy, panoramiczny kadr dla tapet desktopowych */
+}
+
+.project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.5s ease;
+}
+
+/* Opis i metadane pod grafiką wewnątrz karty */
+.project-info {
+    padding: 25px;
+    background: #1a1d24;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.project-meta {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #00f2fe; /* Miętowy kod techniczny */
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+}
+
+.project-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* --- EFEKTY HOVER (Najechanie myszką) --- */
+.project-card:hover {
+    transform: translateY(-8px); /* Subtelne uniesienie całej karty */
+    border-color: rgba(0, 242, 254, 0.2); /* Delikatne miętowe rozświetlenie krawędzi */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.project-card:hover .project-img {
+    transform: scale(1.03); /* Bardzo delikatne, filmowe zbliżenie grafiki */
+}
+
+/* --- RESPONSYWNOŚĆ (Smartfony) --- */
+@media (max-width: 1024px) {
+    .project-row-grid {
+        grid-template-columns: 1fr; /* Na telefonach układamy karty jedna pod drugą */
+        gap: 30px;
+    }
+    
+    .category-block:nth-of-type(1) .project-image-wrapper,
+    .category-block:nth-of-type(2) .project-image-wrapper {
+        height: 45vh; /* Ujednolicona wysokość dla wygody przeglądania na telefonie */
+    }
+}

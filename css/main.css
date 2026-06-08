@@ -1,0 +1,321 @@
+:root {
+    --bg-color: #121418;
+    --text-color: #ffffff;
+    --text-muted: #94a3b8;
+    --accent-color: #00f2fe; /* Turkus wyciągnięty z graffiti */
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+/* Pomocnicze kontenery sekcji */
+.section-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 100px 4vw;
+}
+/* --- SYSTEM PŁYNNEGO PODGLĄDU GRAFIK (LIGHTBOX) --- */
+
+.lightbox-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 20, 24, 0.95); /* Głębokie, ciemne tło odcinające resztę strony */
+    z-index: 2000; /* Lightbox musi być nad wszystkim, nawet nad menu */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    opacity: 0;
+    pointer-events: none; /* Ignoruj kliknięcia, gdy jest niewidoczny */
+    transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Stan aktywny - płynne wygaszenie tła */
+.lightbox-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Formatowanie powiększonego obrazu */
+.lightbox-overlay img {
+    max-width: 900px;         /* Maksymalna, rozsądna szerokość podglądu */
+    max-height: 85vh;        /* Maksymalna wysokość, by obraz nie uciekał poza ekran */
+    object-fit: contain;     /* Zachowanie perfekcyjnych proporcji Twojego pliku JPEG */
+    border-radius: 6px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+    
+    /* Efekt kinetycznego wejścia (obraz delikatnie rośnie podczas otwierania) */
+    transform: scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.lightbox-overlay.active img {
+    transform: scale(1); /* Powrót do skali 100% po otwarciu */
+}
+
+/* Nowoczesny kursor zamykania nad całym ekranem */
+.lightbox-overlay {
+    cursor: zoom-out;
+}
+
+/* Minimalistyczny przycisk X w prawym górnym rogu */
+.lightbox-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-overlay:hover .lightbox-close {
+    opacity: 1;
+}
+/* --- NOWY, PRECYZYJNY KURSOR CYBER-RING --- */
+
+/* --- ABSOLUTNE UKRYCIE WSKAŹNIKA SYSTEMOWEGO --- */
+
+/* Wymuszenie ukrycia kursora systemowego na wszystkich interaktywnych elementach */
+.site-nav,
+.site-nav *,
+.project-card, 
+.project-card *, 
+.lightbox-overlay,
+.btn-primary {
+    cursor: none !important;
+}
+
+/* Główny kontener kursora - teraz staje się subtelnym pierścieniem */
+.custom-follower {
+    position: fixed;
+    width: 40px;  /* Mniejszy, bardziej dystyngowany rozmiar startowy */
+    height: 40px;
+    border: 1px solid rgba(0, 242, 254, 0.4); /* Cienki, miętowy obrys zamiast pełnego tła */
+    background-color: rgba(18, 20, 24, 0.2);  /* Półprzezroczyste, ciemne wnętrze */
+    border-radius: 50%;
+    z-index: 1500;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Zmieniamy zwykłe pulsowanie na bardzo delikatne drganie światła */
+    transition: 
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        width 0.3s ease,
+        height 0.3s ease,
+        border-color 0.3s ease;
+}
+
+/* Centralna, żyletkowo ostra biała kropka */
+.cursor-dot {
+    width: 4px;
+    height: 4px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+/* Mały, techniczny plusik schowany w tle */
+.cursor-plus {
+    position: absolute;
+    color: #00f2fe;
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 400;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* STAN AKTYWNY: Reakcja na najechanie nad projekt */
+.custom-follower.visible {
+    transform: translate(-50%, -50%) scale(1);
+    width: 60px;  /* Pierścień elegancko rozszerza się, jakby badał strukturę grafiki */
+    height: 60px;
+    border-color: rgba(0, 242, 254, 0.8);
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+}
+
+/* Po najechaniu kropka znika, ustępując miejsca plusowi */
+.custom-follower.visible .cursor-dot {
+    opacity: 0;
+    transform: scale(0);
+}
+
+/* Plus płynnie wskakuje na środek celownika */
+.custom-follower.visible .cursor-plus {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* GŁÓWNY KONTENER KARTY — AKTYWACJA GŁĘBOKIEGO 3D */
+.project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: #1a1d24;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    
+    /* Wymuszamy pełne renderowanie przestrzenne dla dzieci */
+    transform-style: preserve-3d;
+    perspective: 1200px;
+    
+    transition: 
+        border-color 0.4s ease,
+        box-shadow 0.4s ease;
+}
+
+.project-card:hover {
+    border-color: rgba(0, 242, 254, 0.6);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7), 0 0 40px rgba(0, 242, 254, 0.2);
+}
+
+/* WARSTWA OBRAZU Z PARALAKSĄ GŁĘBI */
+.project-image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background-color: #121418;
+    transform-style: preserve-3d;
+}
+
+.project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+    /* Płynne, dynamiczne śledzenie ruchu bez opóźnień (kontrolowane przez JS) */
+    transition: transform 0.1s ease-out; 
+}
+
+/* INTERAKTYWNY OVERLAY: HOLOGRAFICZNY BŁYSK (SHINE) */
+.project-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    mix-blend-mode: color-dodge; /* Magiczne mieszanie kolorów dające efekt neonowego refleksu */
+    opacity: 0;
+    
+    /* Dynamiczny gradient udający załamanie światła na szkle */
+    background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+        rgba(0, 242, 254, 0.35) 0%, 
+        rgba(255, 255, 255, 0.05) 20%, 
+        transparent 60%
+    );
+    transition: opacity 0.4s ease;
+}
+
+.project-card:hover .project-image-wrapper::before {
+    opacity: 1; /* Światło zapala się tylko po najechaniu myszką */
+}
+
+/* PARALAKSA TEKSTOWA (WYSUNIĘCIE INFO DO PRZODU) */
+.project-info {
+    padding: 25px;
+    background: #1a1d24;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+    
+    /* Odpychamy napisy w przestrzeni 3D od tła karty */
+    transform: translateZ(40px); 
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease-out;
+}
+
+.project-meta {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #00f2fe;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+    /* Dodatkowe piętro wysunięcia dla mikro-detali */
+    transform: translateZ(20px); 
+}
+
+.project-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    transform: translateZ(10px);
+}
+
+
+/* --- ULTRA-WIDOCZNA, PULSUJĄCA LUPA --- */
+
+.custom-follower {
+    position: fixed;
+    width: 85px; /* Zwiększamy rozmiar lupy, by była bardziej wyrazista */
+    height: 85px;
+    background-color: #00f2fe;
+    border-radius: 50%;
+    z-index: 1500;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 35px rgba(0, 242, 254, 0.6);
+    
+    /* Dodajemy permanentną, technologiczną animację pulsowania */
+    animation: cursorPulse 2s infinite ease-in-out;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efekt sprężyny (back-bounce) */
+}
+
+.custom-follower span {
+    color: #121418;
+    font-family: monospace;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.custom-follower.visible {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.custom-follower.visible span {
+    opacity: 1;
+}
+
+/* Definicja pulsowania neonowej lupy */
+@keyframes cursorPulse {
+    0% { box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); }
+    50% { box-shadow: 0 0 45px rgba(0, 242, 254, 0.8); transform: translate(-50%, -50%) scale(1.05); }
+    100% { box-shadow: 0 0 25px rgba(0, 242, 254, 0.4); }
+}

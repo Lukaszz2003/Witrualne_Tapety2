@@ -1,0 +1,79 @@
+.site-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 35px 6vw; /* Dajemy menu więcej przestrzeni od góry */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+/* Kontener na logo */
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo a {
+    display: block;
+    line-height: 0;
+}
+
+/* EKSPREJSJA LOGO: Idealny rozmiar i miętowy akcent */
+.vector-logo {
+    height: 80px; /* Wyrazista, profesjonalna wysokość na ekranie */
+    width: auto;
+    display: block;
+    
+    /* Magia CSS: mapujemy kolory SVG na jasny, nowoczesny neonowy miętowy */
+    filter: invert(78%) sepia(39%) saturate(490%) hue-rotate(115deg) brightness(101%) contrast(101%);
+    
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Subtelna reakcja na hover — rozświetlenie logotypu przy najechaniu */
+.nav-logo a:hover .vector-logo {
+    transform: scale(1.04);
+    filter: invert(85%) sepia(50%) saturate(600%) hue-rotate(120deg) brightness(110%) contrast(101%);
+    drop-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+}
+
+/* Linki nawigacyjne po prawej stronie */
+.nav-links {
+    display: flex;
+    gap: 48px; /* Lekko zwiększamy odstęp, by dopasować przestrzeń do większych liter */
+    align-items: center;
+}
+
+/* ZWIĘKSZONA CZCIONKA W MENU */
+.nav-item {
+    font-size: 1.1rem; /* Zwiększamy z 0.9rem na 1.1rem dla lepszej ekspozycji */
+    font-weight: 700;   /* Pogrubiamy font, aby menu miało zdecydowany, pewny charakter */
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    position: relative;
+    transition: var(--transition-smooth);
+}
+
+/* Nowoczesne, minimalistyczne podkreślenie pod większym fontem */
+.nav-item::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2px; /* 2px grubości idealnie pasują do większej czcionki */
+    background-color: #00f2fe; /* Miętowo-turkusowy akcent pod kolor logo */
+    transition: var(--transition-smooth);
+}
+
+.nav-item:hover {
+    color: #ffffff;
+}
+
+.nav-item:hover::after {
+    width: 100%; /* Płynne rozwijanie podkreślenia od lewej do prawej */
+}

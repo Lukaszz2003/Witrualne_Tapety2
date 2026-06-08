@@ -1,0 +1,101 @@
+.hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Zdjęcie jako pełne tło sekcji Hero */
+.hero-bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* Nowoczesne przyciemnienie (gradient), żeby napisy były perfekcyjnie czytelne */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(18, 20, 24, 0.95) 30%, rgba(18, 20, 24, 0.4) 100%);
+    z-index: 2;
+}
+
+/* Treść nad nałożonym obrazem */
+.hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 0 6vw;
+    max-width: 800px;
+}
+
+.hero-tag {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: calc(2.5rem + 2.5vw);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 25px;
+}
+
+.hero-description {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    line-height: 1.7;
+}
+
+/* GŁÓWNY PRZYCISK: WIĘKSZA CZCIONKA I DOSTRAJANE PROPORCJE */
+.btn-primary {
+    display: inline-block;
+    background-color: var(--accent-color); /* Nasz miętowy odcień jako startowe tło */
+    color: #121418;                        /* Ciemny tekst dla idealnego kontrastu */
+    
+    /* Zwiększamy czcionkę i nadajemy jej zdecydowaną wagę */
+    font-size: 1.15rem;                    /* Zwiększone z 0.95rem */
+    font-weight: 800;
+    text-transform: uppercase;             /* Kapitaliki dodają technicznego sznytu */
+    letter-spacing: 0.08em;
+    
+    padding: 18px 42px;                    /* Zwiększony padding dla potężniejszego wyglądu */
+    border-radius: 8px;
+    border: 2px solid var(--accent-color); /* Ramka w kolorze tła - kluczowa dla efektu hover */
+    
+    box-shadow: 0 12px 30px rgba(0, 242, 254, 0.25);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Płynne, maślane przejście */
+}
+
+/* NOWOCZESNY EFEKT HOVER NA CZCIONKĘ I PRZYCISK */
+.btn-primary:hover {
+    background-color: transparent;         /* Płynne zniknięcie miętowego tła */
+    color: var(--accent-color);            /* Czcionka rozbłyskuje na miętowo */
+    
+    transform: translateY(-4px);           /* Wyrazistsze uniesienie w górę */
+    /* Mocniejszy, kinowy blask wokół przezroczystej ramki */
+    box-shadow: 0 20px 40px rgba(0, 242, 254, 0.35); 
+}
+
+@media (max-width: 768px) {
+    .hero-overlay {
+        background: rgba(18, 20, 24, 0.85);
+    }
+    .hero-title {
+        font-size: 2.5rem;
+    }
+}
