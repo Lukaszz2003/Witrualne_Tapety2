@@ -34,15 +34,20 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 40px;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    overflow: hidden;
+    
+    /* Kluczowe dla animacji 3D */
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px; /* Głębokość efektu 3D */
 }
 
-/* Subtelny glow przy najechaniu */
+/* Animacja po najechaniu */
 .bento-item:hover {
+    /* Obrót o kilka stopni wokół osi Y i X */
+    transform: perspective(1000px) rotateY(5deg) rotateX(2deg);
     border-color: var(--accent-color);
-    box-shadow: 0 10px 40px rgba(0, 242, 254, 0.1);
-    transform: translateY(-5px);
+    box-shadow: 20px 20px 40px rgba(0, 0, 0, 0.4);
+    z-index: 10;
 }
 
 /* Stylizacja nagłówków z ikonami */

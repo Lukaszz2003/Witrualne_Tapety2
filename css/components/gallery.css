@@ -1,123 +1,154 @@
-/* Kontener całej podstrony z realizacjami */
+:root {
+    --accent-color: #00f2fe;
+    --bg-color: #0c0e12;
+    --card-bg: #1a1d24;
+}
+
+/* 1. LAYOUT STRONY */
 .gallery-page-wrapper {
     background-color: var(--bg-color);
     min-height: 100vh;
-    padding: 180px 6vw 120px 6vw; /* Duży padding od góry, żeby menu nie zasłaniało tytułów */
+    padding: 120px 6vw;
 }
 
-/* Sekcja pojedynczej kategorii (np. Smartfony) */
 .category-block {
-    margin-bottom: 100px; /* Wyraźny odstęp między sekcjami */
+    margin-bottom: 100px;
 }
 
-/* Nowoczesny, techniczny nagłówek kategorii */
 .category-header {
     display: flex;
-    align-items: baseline;
-    gap: 20px;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 40px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     padding-bottom: 20px;
 }
 
-.category-number {
-    font-family: monospace;
-    font-size: 1rem;
-    color: #00f2fe; /* Nasz miętowy akcent */
-    font-weight: 700;
-}
+.category-number { color: var(--accent-color); font-family: monospace; font-weight: 700; }
+.category-title { font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
 
-.category-title {
-    font-size: 2rem;
-    font-weight: 800;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-}
-
-/* Symetryczna, trójkolumnowa siatka dla 3 grafik */
+/* 2. GRIDY (ROZDZIELONE DLA PROPORCJI) */
 .project-row-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Dokładnie 3 równe kolumny */
-    gap: 40px; /* Elegancki odstęp dający grafikom odetchnąć */
+    gap: 40px;
+    justify-items: center;
 }
 
-/* Pojedyncza karta z projektem */
+/* Smartfony: mniejsze min-width dla pionowych grafik */
+.mobile-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+/* Desktop: większe min-width dla poziomych tapet */
+.desktop-grid {
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+}
+
+/* 3. KARTA PROJEKTU */
 .project-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    background: #1a1d24; /* Delikatnie jaśniejsze tło karty dla odcięcia od podłoża */
+    width: 100%;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeIn 0.6s ease forwards;
+}
+
+.project-image-wrapper {
+    background: var(--card-bg);
     border-radius: 12px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.03);
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: box-shadow 0.3s ease;
 }
 
-/* Kontener na samo zdjęcie w karcie */
-.project-image-wrapper {
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    background-color: #121418;
-}
-
-/* Dopasowanie proporcji zdjęć w zależności od typu urządzenia */
-.category-block:nth-of-type(1) .project-image-wrapper {
-    height: 55vh; /* Wyższy kadr dla pionowych tapet na smartfony */
-}
-
-.category-block:nth-of-type(2) .project-image-wrapper {
-    height: 35vh; /* Szerszy, panoramiczny kadr dla tapet desktopowych */
+.project-card:hover .project-image-wrapper {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .project-img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: all 0.5s ease;
-}
-
-/* Opis i metadane pod grafiką wewnątrz karty */
-.project-info {
-    padding: 25px;
-    background: #1a1d24;
-    border-top: 1px solid rgba(255, 255, 255, 0.02);
-}
-
-.project-meta {
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: #00f2fe; /* Miętowy kod techniczny */
-    margin-bottom: 8px;
-    letter-spacing: 0.1em;
-}
-
-.project-name {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-/* --- EFEKTY HOVER (Najechanie myszką) --- */
-.project-card:hover {
-    transform: translateY(-8px); /* Subtelne uniesienie całej karty */
-    border-color: rgba(0, 242, 254, 0.2); /* Delikatne miętowe rozświetlenie krawędzi */
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    height: auto;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-card:hover .project-img {
-    transform: scale(1.03); /* Bardzo delikatne, filmowe zbliżenie grafiki */
+    transform: scale(1.05);
 }
 
-/* --- RESPONSYWNOŚĆ (Smartfony) --- */
-@media (max-width: 1024px) {
-    .project-row-grid {
-        grid-template-columns: 1fr; /* Na telefonach układamy karty jedna pod drugą */
-        gap: 30px;
-    }
-    
-    .category-block:nth-of-type(1) .project-image-wrapper,
-    .category-block:nth-of-type(2) .project-image-wrapper {
-        height: 45vh; /* Ujednolicona wysokość dla wygody przeglądania na telefonie */
-    }
+.project-meta {
+    font-size: 0.75rem;
+    color: var(--accent-color) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: monospace;
+    margin-bottom: 5px;
+}
+
+.project-name {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* 4. LIGHTBOX */
+.lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(12, 14, 18, 0.95);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lightbox-overlay img {
+    max-width: 90%; max-height: 85%;
+    border-radius: 8px;
+    border: 1px solid var(--accent-color);
+}
+
+/* 5. PRZYCISKI I POMOCNICZE */
+.hidden { display: none; }
+
+.load-more-btn {
+    display: block;
+    margin: 60px auto 0;
+    padding: 14px 40px;
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.load-more-btn:hover { background: var(--accent-color); color: #000; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSYWNOŚĆ DLA BARDZO DUŻYCH EKRANÓW */
+@media (min-width: 1600px) {
+    .desktop-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* MOBILE FIXES */
+@media (max-width: 600px) {
+    .mobile-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .gallery-page-wrapper { padding: 80px 4vw; }
 }
