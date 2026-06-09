@@ -28,20 +28,26 @@
 .category-title { font-size: 2rem; font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
 
 /* 2. GRIDY (ROZDZIELONE DLA PROPORCJI) */
+/* GŁÓWNY GRID - Baza dla wszystkich sekcji */
 .project-row-grid {
     display: grid;
-    gap: 40px;
-    justify-items: center;
+    gap: 30px;
+    justify-items: center; /* Centruje każdą kartę w jej komórce */
+    justify-content: center; /* TO JEST KLUCZ DO WYŚRODKOWANIA CAŁEGO BLOKU */
 }
 
-/* Smartfony: mniejsze min-width dla pionowych grafik */
+/* SMARTFONY - Wymuszenie centrowania */
 .mobile-grid {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    max-width: 1200px; /* Opcjonalnie: ogranicza szerokość bloku, by nie był za szeroki na monitorach */
+    margin: 0 auto; /* Centruje cały kontener względem strony */
 }
 
-/* Desktop: większe min-width dla poziomych tapet */
+/* DESKTOP - Wymuszenie centrowania */
 .desktop-grid {
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    max-width: 1400px; 
+    margin: 0 auto;
 }
 
 /* 3. KARTA PROJEKTU */
