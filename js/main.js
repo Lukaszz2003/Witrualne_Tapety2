@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxImg = document.getElementById('lightbox-img');
     const customCursor = document.getElementById('custom-cursor');
 
+if (customCursor) {
+    customCursor.classList.add('visible'); // Kursor jest widoczny zawsze
+}
+
     // 2. LOGIKA KURSORA
     let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
     document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
@@ -74,35 +78,23 @@ document.addEventListener('DOMContentLoaded', () => {
     setupPagination('mobile-grid', 'mobile-pagination');
     setupPagination('desktop-grid', 'desktop-pagination');
 
-    // 4. INTERAKCJE KART (Tilt + Hover + Lightbox)
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        const img = card.querySelector('.project-img');
-        const wrapper = card.querySelector('.project-image-wrapper');
+   // 4. INTERAKCJE KART
+const projectCards = document.querySelectorAll('.project-card');
+projectCards.forEach(card => {
+    const img = card.querySelector('.project-img');
 
-        card.addEventListener('mouseenter', () => { if (customCursor) customCursor.classList.add('visible'); });
-        card.addEventListener('mouseleave', () => {
-            if (customCursor) customCursor.classList.remove('visible');
-            card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
-            if (img) img.style.transform = 'scale(1) translateZ(0px)';
-        });
+    // Kursor jest już widoczny (dzięki linii 7), więc tutaj dodajemy tylko klasę 'hover'
+   card.addEventListener('mouseenter', () => { 
+    if (customCursor) customCursor.style.transform = 'translate(-50%, -50%) scale(1.5)'; 
+});
 
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) - 0.5;
-            const y = ((e.clientY - rect.top) / rect.height) - 0.5;
-            card.style.transform = `rotateX(${(y * 15).toFixed(2)}deg) rotateY(${(-x * 15).toFixed(2)}deg) translateY(-8px)`;
-            if (img) img.style.transform = 'scale(1.15) translateZ(25px)';
-        });
-
-        card.addEventListener('click', () => {
-            if (!img || !lightbox || !lightboxImg) return;
-            lightboxImg.src = img.src;
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            if (customCursor) customCursor.classList.remove('visible');
-        });
-    });
+card.addEventListener('mouseleave', () => {
+    if (customCursor) customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
+    // ... reszta kodu
+});
+    
+    // ... reszta kodu (mousemove i click) bez zmian
+});;
 
     // 5. ZAMYKANIE LIGHTBOXA
     if (lightbox) {
