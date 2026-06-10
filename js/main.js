@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxImg = document.getElementById('lightbox-img');
     const customCursor = document.getElementById('custom-cursor');
 
-if (customCursor) {
-    customCursor.classList.add('visible'); // Kursor jest widoczny zawsze
-}
+    if (customCursor) {
+        customCursor.classList.add('visible'); // Kursor jest widoczny zawsze
+    }
 
     // 2. LOGIKA KURSORA
     let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
@@ -38,23 +38,18 @@ if (customCursor) {
             cards.forEach((card, index) => {
                 card.style.display = (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) ? 'block' : 'none';
             });
-            
             renderControls();
-            // Płynny scroll do nagłówka sekcji
             window.scrollTo({ top: grid.parentElement.offsetTop - 100, behavior: 'smooth' });
         }
 
         function renderControls() {
             pagination.innerHTML = '';
-
-            // Strzałka w lewo
             const prevBtn = document.createElement('div');
             prevBtn.className = `page-num ${currentPage === 1 ? 'disabled' : ''}`;
             prevBtn.innerHTML = '&lt;';
             prevBtn.onclick = () => { if (currentPage > 1) showPage(currentPage - 1); };
             pagination.appendChild(prevBtn);
 
-            // Numery stron
             for (let i = 1; i <= totalPages; i++) {
                 const btn = document.createElement('div');
                 btn.className = `page-num ${i === currentPage ? 'active' : ''}`;
@@ -63,38 +58,52 @@ if (customCursor) {
                 pagination.appendChild(btn);
             }
 
-            // Strzałka w prawo
             const nextBtn = document.createElement('div');
             nextBtn.className = `page-num ${currentPage === totalPages ? 'disabled' : ''}`;
             nextBtn.innerHTML = '&gt;';
             nextBtn.onclick = () => { if (currentPage < totalPages) showPage(currentPage + 1); };
             pagination.appendChild(nextBtn);
         }
-        
         showPage(1);
     }
 
-    // Inicjalizacja paginacji
     setupPagination('mobile-grid', 'mobile-pagination');
     setupPagination('desktop-grid', 'desktop-pagination');
 
-   // 4. INTERAKCJE KART
-const projectCards = document.querySelectorAll('.project-card');
-projectCards.forEach(card => {
-    const img = card.querySelector('.project-img');
+    // 4. INTERAKCJE KART I PARALAKSA
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        const img = card.querySelector('.project-img');
 
-    // Kursor jest już widoczny (dzięki linii 7), więc tutaj dodajemy tylko klasę 'hover'
-   card.addEventListener('mouseenter', () => { 
-    if (customCursor) customCursor.style.transform = 'translate(-50%, -50%) scale(1.5)'; 
-});
+        card.addEventListener('mouseenter', () => { 
+            if (customCursor) customCursor.style.transform = 'translate(-50%, -50%) scale(1.5)'; 
+        });
 
-card.addEventListener('mouseleave', () => {
-    if (customCursor) customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
-    // ... reszta kodu
-});
-    
-    // ... reszta kodu (mousemove i click) bez zmian
-});;
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            // Obliczamy relatywną pozycję kursora wewnątrz karty (-0.5 do 0.5)
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+            // Efekt przechylenia karty (tilt)
+            card.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${y * -15}deg) scale(1.02)`;
+
+            // Efekt pływania obrazka (paralaks)
+            if (img) {
+                img.style.transform = `scale(1.1) translate(${-x * 20}px, ${-y * 20}px)`;
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            if (customCursor) customCursor.style.transform = 'translate(-50%, -50%) scale(1)';
+            
+            // Reset do stanu początkowego
+            card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
+            if (img) {
+                img.style.transform = `scale(1) translate(0px, 0px)`;
+            }
+        });
+    });
 
     // 5. ZAMYKANIE LIGHTBOXA
     if (lightbox) {
