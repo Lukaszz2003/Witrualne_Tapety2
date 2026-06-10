@@ -2,18 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. POBRANIE ELEMENTÓW
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
-    const projectCards = document.querySelectorAll('.project-card');
     const customCursor = document.getElementById('custom-cursor');
-    const heroBtn = document.querySelector('.btn-primary');
 
     // 2. LOGIKA KURSORA
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
     function animateCursor() {
         cursorX += (mouseX - cursorX) * 0.2;
@@ -26,35 +19,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateCursor();
 
-    // 3. INTERAKCJE KART (Tilt + Hover + Lightbox)
+    // 3. FUNKCJA PAGINACJI ZE STRZAŁKAMI
+    function setupPagination(gridId, paginationId, itemsPerPage = 6) {
+        const grid = document.getElementById(gridId);
+        const pagination = document.getElementById(paginationId);
+        if (!grid || !pagination) return;
+        
+        const cards = Array.from(grid.querySelectorAll('.project-card'));
+        const totalPages = Math.ceil(cards.length / itemsPerPage);
+        let currentPage = 1;
+
+        function showPage(page) {
+            currentPage = page;
+            cards.forEach((card, index) => {
+                card.style.display = (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) ? 'block' : 'none';
+            });
+            
+            renderControls();
+            // Płynny scroll do nagłówka sekcji
+            window.scrollTo({ top: grid.parentElement.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function renderControls() {
+            pagination.innerHTML = '';
+
+            // Strzałka w lewo
+            const prevBtn = document.createElement('div');
+            prevBtn.className = `page-num ${currentPage === 1 ? 'disabled' : ''}`;
+            prevBtn.innerHTML = '&lt;';
+            prevBtn.onclick = () => { if (currentPage > 1) showPage(currentPage - 1); };
+            pagination.appendChild(prevBtn);
+
+            // Numery stron
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('div');
+                btn.className = `page-num ${i === currentPage ? 'active' : ''}`;
+                btn.textContent = i;
+                btn.onclick = () => showPage(i);
+                pagination.appendChild(btn);
+            }
+
+            // Strzałka w prawo
+            const nextBtn = document.createElement('div');
+            nextBtn.className = `page-num ${currentPage === totalPages ? 'disabled' : ''}`;
+            nextBtn.innerHTML = '&gt;';
+            nextBtn.onclick = () => { if (currentPage < totalPages) showPage(currentPage + 1); };
+            pagination.appendChild(nextBtn);
+        }
+        
+        showPage(1);
+    }
+
+    // Inicjalizacja paginacji
+    setupPagination('mobile-grid', 'mobile-pagination');
+    setupPagination('desktop-grid', 'desktop-pagination');
+
+    // 4. INTERAKCJE KART (Tilt + Hover + Lightbox)
+    const projectCards = document.querySelectorAll('.project-card');
     projectCards.forEach(card => {
         const img = card.querySelector('.project-img');
         const wrapper = card.querySelector('.project-image-wrapper');
 
-        card.addEventListener('mouseenter', () => {
-            if (customCursor) customCursor.classList.add('visible');
-        });
-
+        card.addEventListener('mouseenter', () => { if (customCursor) customCursor.classList.add('visible'); });
         card.addEventListener('mouseleave', () => {
             if (customCursor) customCursor.classList.remove('visible');
             card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
             if (img) img.style.transform = 'scale(1) translateZ(0px)';
-            if (wrapper) {
-                wrapper.style.setProperty('--mouse-x', `50%`);
-                wrapper.style.setProperty('--mouse-y', `50%`);
-            }
         });
 
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
-            const xPercent = ((e.clientX - rect.left) / rect.width * 100).toFixed(2);
-            const yPercent = ((e.clientY - rect.top) / rect.height * 100).toFixed(2);
-            
-            if (wrapper) {
-                wrapper.style.setProperty('--mouse-x', `${xPercent}%`);
-                wrapper.style.setProperty('--mouse-y', `${yPercent}%`);
-            }
-
             const x = ((e.clientX - rect.left) / rect.width) - 0.5;
             const y = ((e.clientY - rect.top) / rect.height) - 0.5;
             card.style.transform = `rotateX(${(y * 15).toFixed(2)}deg) rotateY(${(-x * 15).toFixed(2)}deg) translateY(-8px)`;
@@ -65,41 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!img || !lightbox || !lightboxImg) return;
             lightboxImg.src = img.src;
             lightbox.classList.add('active');
-            lightbox.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             if (customCursor) customCursor.classList.remove('visible');
         });
     });
 
-    // 4. ZAMYKANIE LIGHTBOXA
+    // 5. ZAMYKANIE LIGHTBOXA
     if (lightbox) {
         lightbox.addEventListener('click', (e) => {
             if (e.target !== lightboxImg) {
                 lightbox.classList.remove('active');
-                lightbox.style.display = 'none';
                 document.body.style.overflow = '';
-                setTimeout(() => { if (lightboxImg) lightboxImg.src = ''; }, 400);
             }
         });
     }
-
-    // 5. OBSŁUGA CTA
-    if (heroBtn && customCursor) {
-        heroBtn.addEventListener('mouseenter', () => customCursor.classList.add('visible'));
-        heroBtn.addEventListener('mouseleave', () => customCursor.classList.remove('visible'));
-    }
-
-    // 6. OBSŁUGA PRZYCISKU "POKAŻ WIĘCEJ"
-    const loadMoreBtns = document.querySelectorAll('.load-more-btn');
-    loadMoreBtns.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetId = button.getAttribute('data-target');
-            const grid = document.getElementById(targetId);
-            if (grid) {
-                const hiddenItems = grid.querySelectorAll('.project-card.hidden');
-                hiddenItems.forEach(item => item.classList.remove('hidden'));
-                button.style.display = 'none'; // Ukryj przycisk po odsłonięciu
-            }
-        });
-    });
 });
