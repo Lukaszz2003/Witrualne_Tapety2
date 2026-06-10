@@ -4,7 +4,7 @@
     --text-muted: #94a3b8;
     --accent-color: #00f2fe;
     --card-bg: #1a1d24;
-    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, monospace, sans-serif;
 }
 
 /* 1. RESET I PODSTAWY */
