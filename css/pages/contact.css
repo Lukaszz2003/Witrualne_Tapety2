@@ -1,0 +1,99 @@
+
+/* Wyśrodkowanie całej zawartości */
+.section-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 150px;
+    padding-bottom: 100px;
+}
+
+/* Duży odstęp pod nagłówkiem */
+.contact-header {
+    text-align: center;
+    margin-bottom: 80px; /* Zwiększony odstęp z 50px/60px na 80px */
+}
+
+.contact-header h1 {
+    font-size: 30px;
+    margin-bottom: 20px; /* Więcej oddechu pod tytułem */
+}
+
+.contact-header p {
+    color: var(--text-muted);
+    font-size: 20px;
+    max-width: 500px; /* Ograniczenie szerokości tekstu, by ładniej wyglądał */
+    margin: 0 auto;
+}
+
+.contact-wrapper {
+    width: 100%;
+    max-width: 600px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 16px;
+    background: #121418;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Stan po kliknięciu */
+.form-group input:focus, 
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+}
+/* css/pages/contact.css */
+
+/* css/pages/contact.css */
+
+/* Styling dla sekcji social wewnątrz contact.css */
+.social-links {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-links p {
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.social-icon {
+    font-size: 2.5rem;
+    color: var(--accent-color);
+    transition: 0.3s;
+    display: inline-block;
+    animation: pulse 3s infinite ease-in-out;
+}
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+.social-icon:hover {
+    color: #fff;
+    transform: scale(1.1);
+}

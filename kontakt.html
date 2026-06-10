@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kontakt — Wirtualne Tapety</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/navbar.css">
+    <link rel="stylesheet" href="css/pages/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="site-nav">
+        <div class="nav-logo">
+            <a href="index.html">
+                <img src="./assets/images/branding/logo.svg" alt="Wirtualne Tapety" class="vector-logo">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="realizacje.html" class="nav-item">Kolekcje</a>
+            <a href="o-projekcie.html" class="nav-item">Manifest</a>
+            <a href="kontakt.html" class="nav-item active">Kontakt</a>
+        </div>
+    </nav>
+
+    <main class="section-container">
+    <div class="contact-header">
+        <h1 class="section-title">Porozmawiajmy o projekcie</h1>
+        <p class="section-subtitle">Chętnie odpowiem na Twoje pytania. Wypełnij formularz poniżej.</p>
+    </div>
+
+    <div class="contact-wrapper">
+        <form class="contact-form" action="#" method="POST">
+            <div class="form-group"><input type="text" name="name" placeholder="Twoje imię" required></div>
+            <div class="form-group"><input type="email" name="email" placeholder="Twój adres e-mail" required></div>
+            <div class="form-group"><textarea name="message" rows="6" placeholder="W czym mogę Ci pomóc?" required></textarea></div>
+            <button type="submit" class="btn-primary">Wyślij Wiadomość</button>
+        </form>
+        
+        <div class="social-links">
+            <p>Znajdź mnie na Facebooku:</p>
+            <a href="https://www.facebook.com/profile.php?id=61585781703264&locale=pl_PL" 
+               target="_blank" rel="noopener noreferrer" class="social-icon">
+                <i class="fab fa-facebook"></i>
+            </a>
+        </div>
+    </div>
+</main>
+
+    <div id="custom-cursor" class="custom-follower"><div class="cursor-dot"></div></div>
+
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>
