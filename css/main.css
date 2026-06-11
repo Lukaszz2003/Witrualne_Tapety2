@@ -201,6 +201,7 @@ a { color: inherit; text-decoration: none; }
     width: 100%; height: 100%;
     z-index: 2; /* Warstwa z kropkami jest nad zdjęciem i nakładką */
     pointer-events: none;
+    overflow: hidden;
 }
 
 .layer {
@@ -293,4 +294,97 @@ a { color: inherit; text-decoration: none; }
     color: rgba(255, 255, 255, 0.2);
     text-transform: uppercase;
     letter-spacing: 2px;
+}
+/* --- RESPONSYWNOŚĆ (DODANE DO TWOJEGO KODU) --- */
+
+/* 1. Wyłączenie niestandardowego kursora na ekranach dotykowych */
+@media (pointer: coarse) {
+    * { cursor: auto !important; }
+    .custom-follower { display: none !important; }
+}
+
+/* 2. Responsywność dla ekranów poniżej 768px (telefony) */
+@media (max-width: 768px) {
+    
+    /* Zmniejszenie paddingów w sekcjach, aby strona była bardziej zwarta */
+    .section-container {
+        padding: 60px 4vw;
+    }
+
+    /* Naprawa stopki: zmiana układu na kolumnowy i wyśrodkowanie */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .footer-links a {
+        margin-left: 0; /* Usuwamy lewy margines, który rozpychał linki */
+    }
+
+    /* Naprawa lightboxa - padding dla mniejszych ekranów */
+    .lightbox-overlay {
+        padding: 20px;
+    }
+}
+
+/* 3. Dodatkowe zabezpieczenie szerokości dla formularzy i kart */
+@media (max-width: 480px) {
+    .project-info {
+        padding: 15px;
+    }
+    
+    .project-name {
+        font-size: 1rem;
+    }
+}
+/* Stylizacja przycisku hamburgera */
+.hamburger {
+    display: none; /* Domyślnie ukryty na desktopie */
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+}
+
+.hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: 0.3s;
+}
+
+/* Wersja mobilna */
+@media (max-width: 768px) {
+    .hamburger { display: flex; }
+    
+    .nav-links {
+        display: none; /* Ukryte menu */
+        flex-direction: column;
+        position: absolute;
+        top: 80px; left: 0; width: 100%;
+        background: var(--bg-color);
+        padding: 40px;
+        text-align: center;
+        border-bottom: 2px solid var(--accent-color);
+    }
+
+    .nav-links.active { 
+    display: flex !important;
+    z-index: 9998 !important;/* Klasa dodawana przez JS */
+}
 }

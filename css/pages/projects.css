@@ -103,3 +103,28 @@
 .main-manifest { grid-column: span 2; }
 .tech-stack { grid-column: span 1; }
 .vision { grid-column: span 3; }
+/* Zakładam, że Twoje boxy są w kontenerze o klasie np. .content-wrapper */
+@media (max-width: 768px) {
+    .content-wrapper {
+        display: flex;
+        flex-direction: column !important; /* Wymusza układ jeden pod drugim */
+        gap: 20px; /* Odstęp między boxami */
+        width: 100%;
+    }
+
+    /* Upewnij się, że pojedyncze boxy mają pełną szerokość */
+    .content-wrapper > div {
+        width: 100% !important;
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 768px) {
+    .bento-grid {
+        display: flex;
+        flex-direction: column !important;
+        gap: 20px;
+    }
+    .bento-item {
+        width: 100% !important;
+    }
+}
