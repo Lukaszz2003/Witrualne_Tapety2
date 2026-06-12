@@ -10,19 +10,15 @@ document.addEventListener('DOMContentLoaded', () => {
         customCursor.classList.add('visible');
     }
 
-    // 6. MENU HAMBURGER (ZABEZPIECZENIE)
-    // Dodajemy 'pointer-events: auto' w razie gdyby CSS blokował kliknięcie
+    // 2. MENU HAMBURGER
     if (hamburger && navLinks) {
         hamburger.style.pointerEvents = 'auto'; 
-        
         hamburger.addEventListener('click', (e) => {
-            e.stopPropagation(); // Zapobiega bąbelkowaniu zdarzeń
+            e.stopPropagation();
             navLinks.classList.toggle('active');
             hamburger.classList.toggle('open');
-            console.log("Menu zmienione:", navLinks.classList.contains('active'));
         });
 
-        // Dodatkowe: Zamykanie menu po kliknięciu w link
         const links = navLinks.querySelectorAll('a');
         links.forEach(link => {
             link.addEventListener('click', () => {
@@ -32,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. LOGIKA KURSORA (BEZ ZMIAN)
+    // 3. LOGIKA KURSORA
     let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
     document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
 
@@ -47,7 +43,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateCursor();
 
-    // 3. PAGINACJA (BEZ ZMIAN)
+    // 4. EFEKTY INTERAKCJI: KARTY (PARALAKSA 3D) ORAZ HERO
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        const img = card.querySelector('.project-img');
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+            card.style.transform = `perspective(1000px) rotateY(${x * 15}deg) rotateX(${y * -15}deg) scale(1.02)`;
+            if (img) img.style.transform = `scale(1.1) translate(${-x * 20}px, ${-y * 20}px)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1)`;
+            if (img) img.style.transform = `scale(1) translate(0px, 0px)`;
+        });
+    });
+
+    const hero = document.querySelector('.hero-section');
+    const layers = document.querySelectorAll('.hero-background .layer');
+
+    if (hero && layers.length > 0) {
+        hero.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            layers.forEach((layer, index) => {
+                const speed = (index + 1) * 0.03; 
+                const x = (centerX - clientX) * speed;
+                const y = (centerY - clientY) * speed;
+                layer.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+        });
+
+        hero.addEventListener('mouseleave', () => {
+            layers.forEach(layer => {
+                layer.style.transform = `translateX(0px) translateY(0px)`;
+            });
+        });
+    }
+
+    // 5. PAGINACJA (KOMPLETNA WERSJA)
     function setupPagination(gridId, paginationId, itemsPerPage = 6) {
         const grid = document.getElementById(gridId);
         const pagination = document.getElementById(paginationId);
@@ -68,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function renderControls() {
             pagination.innerHTML = '';
+            
             const prevBtn = document.createElement('div');
             prevBtn.className = `page-num ${currentPage === 1 ? 'disabled' : ''}`;
             prevBtn.innerHTML = '&lt;';
@@ -90,41 +131,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         showPage(1);
     }
-
     setupPagination('mobile-grid', 'mobile-pagination');
     setupPagination('desktop-grid', 'desktop-pagination');
 
-    // 4. EFEKTY INTERAKCJI (BEZ ZMIAN)
-    // Upewnij się, że ten blok kodu jest wewnątrz DOMContentLoaded
-const hero = document.querySelector('.hero-section');
-const layers = document.querySelectorAll('.hero-background .layer');
-
-if (hero && layers.length > 0) {
-    hero.addEventListener('mousemove', (e) => {
-        const { clientX, clientY } = e;
-        // Obliczamy środek ekranu
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-
-        layers.forEach((layer, index) => {
-            // Różne prędkości dla różnych warstw (daje efekt głębi)
-            const speed = (index + 1) * 0.03; 
-            const x = (centerX - clientX) * speed;
-            const y = (centerY - clientY) * speed;
-            
-            layer.style.transform = `translateX(${x}px) translateY(${y}px)`;
-        });
-    });
-
-    // Resetowanie pozycji przy opuszczeniu sekcji
-    hero.addEventListener('mouseleave', () => {
-        layers.forEach(layer => {
-            layer.style.transform = `translateX(0px) translateY(0px)`;
-        });
-    });
-}
-
-    // 5. ZAMYKANIE LIGHTBOXA (BEZ ZMIAN)
+    // 6. ZAMYKANIE LIGHTBOXA
     if (lightbox) {
         lightbox.addEventListener('click', (e) => {
             if (e.target !== lightboxImg) {
